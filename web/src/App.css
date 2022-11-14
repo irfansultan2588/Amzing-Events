@@ -1,0 +1,189 @@
+* {
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f7f7f7 !important;
+    font-family: -apple-system, BlinkMacSystemFont,
+        Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+        Liberation Sans, sans-serif, Apple Color Emoji,
+        Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+
+}
+
+
+.navBtn {
+    padding: 5px 20px 10px 20px;
+    border-radius: 28px;
+}
+
+.navBtn:hover {
+    color: #fff;
+}
+
+.nav-2 {
+    background-color: #002847 !important;
+    color: #fff;
+}
+
+.navBtn {
+    border: none;
+    font-size: large;
+    font-weight: 500;
+    background: none;
+    color: #fff;
+}
+
+.haeding-nav {
+    color: #fff;
+    padding-top: 15px;
+}
+
+.btn-container {
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+
+}
+
+.child {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.child2 {
+    width: 20%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-container-out {
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.child3 {
+    width: 20%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-signup {
+    background-color: #002847 !important;
+    letter-spacing: 2px !important;
+}
+
+.line {
+    text-decoration: none !important;
+}
+
+.main-otp2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.css-1999axt-MuiAvatar-root {
+    background-color: #002847 !important;
+}
+
+/* /////////////////// create events////////////////// */
+
+.formMain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 65vh;
+}
+
+.eventsForm {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid lightgray;
+
+}
+
+.eventsForm:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+
+.addEvent_btn {
+    color: black !important;
+    border-color: #002847 !important;
+    border-radius: 28px !important;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 13px 30px 13px 30px;
+    font-size: 20px;
+    line-height: 1.5;
+    letter-spacing: 3px;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    font-style: italic;
+    margin-top: 20px;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+}
+
+.addEvent_btn:hover {
+    background-color: #002847;
+    color: #fff !important;
+
+}
+
+#title,
+#select,
+#description,
+#address,
+#startDate,
+#endDate {
+    width: 20vw;
+    border: none;
+    margin: 5px;
+    border-bottom: 2px solid #002847;
+    font-size: larger;
+    padding: 5px;
+    outline: none;
+    background-color: #f7f7f7;
+}
+
+.headingg {
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.tit-div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.create_hadding {
+    text-align: center;
+    font-style: italic;
+    margin-top: 2rem;
+    letter-spacing: 3px;
+}
