@@ -343,3 +343,9 @@ body {
     color: #002847;
     cursor: pointer;
 }
+
+.navbar-toggler-icon {
+
+    background-color: #fff !important;
+
+}

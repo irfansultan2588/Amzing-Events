@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://my-product-app-react.web.app', '*'],
+    origin: ['http://localhost:3000', ' https://amizing-events.netlify.app', '*'],
     credentials: true
 }));
 
