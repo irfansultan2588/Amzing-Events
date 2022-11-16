@@ -9,7 +9,7 @@ let data = {
     user: {},
     isLogin: false,
     darkTheme: true,
-    baseUrl: "amzing-events-pksu.vercel.app"
+    baseUrl: "https://amzing-events-pksu.vercel.app"
 }
 export default function ContextProvider({ children }) {
     const [state, dispatch] = useReducer(reducer, data)

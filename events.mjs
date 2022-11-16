@@ -51,31 +51,6 @@ const eventSchema = new mongoose.Schema({
 const eventModel = mongoose.model('events', eventSchema);
 
 
-app.post("/verifyotp", async (req, res) => {
-    try {
-        let { email, otp } = req.body;
-        if (!email || !otp) {
-            return res.status(400).send("empty otp details ate not allowed");
-        } else {
-            const user = await userModel.findOne({ email });
-            if (otp === user.otp) {
-                await userModel.updateOne({ email }, { verify: true, otp: null })
-                return res.status(200).send({ message: "correct otp" })
-            } else {
-                return res.status(403).send({ message: "incorrect otp" })
-            }
-        }
-    } catch (error) {
-        console.log(error, 'error')
-        res.json({
-            status: "failed",
-            message: "error.message"
-
-        })
-    }
-})
-
-
 
 app.post("/signup", async (req, res) => {
 
@@ -262,43 +237,30 @@ app.post("/login", (req, res) => {
 });
 
 
-app.post("/event", async (req, res) => {
-
-    console.log(req.body, "req.body");
-
-
+app.post("/verifyotp", async (req, res) => {
     try {
-
-        const response = await eventModel.create({
-            title: req.body.title,
-            select: req.body.select,
-            description: req.body.description,
-            address: req.body.address,
-            createdBy: req.body.createdBy,
-            startDate: req.body.startDate,
-            endDate: req.body.endDate,
+        let { email, otp } = req.body;
+        if (!email || !otp) {
+            return res.status(400).send("empty otp details ate not allowed");
+        } else {
+            const user = await userModel.findOne({ email });
+            if (otp === user.otp) {
+                await userModel.updateOne({ email }, { verify: true, otp: null })
+                return res.status(200).send({ message: "correct otp" })
+            } else {
+                return res.status(403).send({ message: "incorrect otp" })
+            }
+        }
+    } catch (error) {
+        console.log(error, 'error')
+        res.json({
+            status: "failed",
+            message: "error.message"
 
         })
-        console.error(response, "response")
-
-        await response.save()
-        try {
-            res.send({
-                message: "event added",
-                data: "event created successfully"
-            });
-        } catch (err) {
-            console.error(err)
-        }
-
-    } catch (error) {
-        console.log('error', error)
-        res.status(500).send({
-            message: "faild to added event"
-        });
     }
-
 })
+
 
 app.get("/events", async (req, res) => {
 
@@ -316,6 +278,82 @@ app.get("/events", async (req, res) => {
         });
     }
 })
+
+
+app.use(function (req, res, next) {
+    console.log("req.cookies: ", req.cookies);
+
+    if (!req.cookies.Token) {
+        res.status(401).send({
+            message: "include http-only credentials with every request"
+        })
+        return;
+    }
+    jwt.verify(req.cookies.Token, SECRET, function (err, decodedData) {
+        if (!err) {
+
+            console.log("decodedData: ", decodedData);
+
+            const nowDate = new Date().getTime() / 1000;
+
+            if (decodedData.exp < nowDate) {
+                res.status(401).send("token expired")
+            } else {
+                console.log("token approved");
+                req.body.token = decodedData
+                next();
+            }
+        } else {
+            res.status(401).send("invalid token")
+        }
+    });
+}),
+
+
+
+
+
+
+
+    app.post("/event", async (req, res) => {
+
+        console.log(req.body, "req.body");
+
+
+        try {
+
+            const response = await eventModel.create({
+                title: req.body.title,
+                select: req.body.select,
+                description: req.body.description,
+                address: req.body.address,
+                createdBy: req.body.createdBy,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+
+            })
+            console.error(response, "response")
+
+            await response.save()
+            try {
+                res.send({
+                    message: "event added",
+                    data: "event created successfully"
+                });
+            } catch (err) {
+                console.error(err)
+            }
+
+        } catch (error) {
+            console.log('error', error)
+            res.status(500).send({
+                message: "faild to added event"
+            });
+        }
+
+    })
+
+
 ///////////////get single event//////////////
 app.get("/event/:id", async (req, res) => {
     try {
@@ -390,47 +428,16 @@ app.get("/profile", async (req, res) => {
     }
 })
 
-app.use(function (req, res, next) {
-    console.log("req.cookies: ", req.cookies);
 
-    if (!req.cookies.Token) {
-        res.status(401).send({
-            message: "include http-only credentials with every request"
-        })
-        return;
-    }
-    jwt.verify(req.cookies.Token, SECRET, function (err, decodedData) {
-        if (!err) {
 
-            console.log("decodedData: ", decodedData);
 
-            const nowDate = new Date().getTime() / 1000;
-
-            if (decodedData.exp < nowDate) {
-                res.status(401).send("token expired")
-            } else {
-                console.log("token approved");
-                req.body.token = decodedData
-                next();
-            }
-        } else {
-            res.status(401).send("invalid token")
-        }
+app.post("/logout", (req, res) => {
+    res.cookie('Token', '', {
+        maxAge: 0,
+        httpOnly: true
     });
-}),
-
-
-
-
-
-
-    app.post("/logout", (req, res) => {
-        res.cookie('Token', '', {
-            maxAge: 0,
-            httpOnly: true
-        });
-        res.send({ message: "Logout successful", });
-    });
+    res.send({ message: "Logout successful", });
+});
 
 
 
