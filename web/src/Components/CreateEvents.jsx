@@ -118,8 +118,6 @@ const CreateEvents = () => {
 
 
 
-
-
     return (
         <>
             <h1 className='create_hadding'>Create Events</h1>
