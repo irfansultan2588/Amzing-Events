@@ -9,7 +9,7 @@ let data = {
     user: {},
     isLogin: false,
     darkTheme: true,
-    baseUrl: (window.location.href.indexOf("https") === -1) ? "http://localhost:5001" : "my-productapp-react-with-server-production.up.railway.app"
+    baseUrl: (window.location.href.indexOf("https") === -1) ? "http://localhost:5001" : "amzing-events-production.up.railway.app"
 }
 
 
