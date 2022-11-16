@@ -9,7 +9,7 @@ let data = {
     user: {},
     isLogin: false,
     darkTheme: true,
-    baseUrl: (window.location.href.indexOf("https") === -1) ? "http://localhost:5001" : "amzing-events.vercel.app"
+    baseUrl: (window.location.href.indexOf("https") === -1) ? "http://localhost:5001" : "amzing-events-pksu.vercel.app"
 }
 export default function ContextProvider({ children }) {
     const [state, dispatch] = useReducer(reducer, data)
