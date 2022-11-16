@@ -45,7 +45,9 @@ function Login() {
         console.log({
             email: data.get('email'),
             password: data.get('password'),
-        });
+        })
+
+        console.log("🚀 ~ state.baseUrl", state.baseUrl);
 
         try {
             let response = await axios.post(`${state.baseUrl}/login`, {
