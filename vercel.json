@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "Amazing-Events",
+    "builds": [
+        {
+            "src": "events.mjs",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/events.mjs"
+        }
+    ]
+}
