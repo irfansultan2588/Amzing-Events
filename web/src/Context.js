@@ -11,8 +11,6 @@ let data = {
     darkTheme: true,
     baseUrl: (window.location.href.indexOf("https") === -1) ? "http://localhost:5001" : "https://amzing-events.vercel.app"
 }
-
-
 export default function ContextProvider({ children }) {
     const [state, dispatch] = useReducer(reducer, data)
     return (
