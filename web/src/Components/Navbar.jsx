@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GlobalContext } from '../Context';
 import axios from "axios"
 import { styled } from '@mui/material/styles';
-// import images from '../assets/img.png'
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -18,8 +17,11 @@ import Navbar from 'react-bootstrap/Navbar';
 const NavbarComponent = () => {
 
     let { state, dispatch } = useContext(GlobalContext);
+    let [toggleReload, setToggleReload] = useState(false);
+
 
     console.log(state);
+
     const logouthandler = async () => {
 
         try {
@@ -44,6 +46,10 @@ const NavbarComponent = () => {
 
     }));
 
+    const createEvent = () => {
+        setToggleReload(!toggleReload);
+    }
+
     return <>
 
         <Navbar bg="#fff" expand="lg" className="nav-2">
@@ -51,6 +57,7 @@ const NavbarComponent = () => {
             <Container fluid id="container">
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
+
 
                     <Nav
                         className="me-auto my-2 my-lg-0"
@@ -61,12 +68,14 @@ const NavbarComponent = () => {
                         {(state.isLogin === true) ?
                             < >
                                 <div className="btn-container">
-                                    <div className="child">
+                                    <div>
                                         <h3 className="haeding-nav">Amazing Events</h3>
                                     </div>
+
                                     <div className="child2">
-                                        <Nav.Link> <Link to="/home"> <button className="navBtn"> Home</button></Link> </Nav.Link>
-                                        <Nav.Link> <Link to="/CreateEvents"> <button className="navBtn">CreateEvents</button></Link> </Nav.Link>
+                                        <Nav.Link> <Link to="/Home"> <button className="navBtn"> Home</button></Link> </Nav.Link>
+                                        <Nav.Link> <Link to="/CreateEvents"> <button className="navBtn" onClick={createEvent}>CreateEvents</button></Link> </Nav.Link>
+                                        <Nav.Link> <Link to="/MyEvents"> <button className="navBtn23">My Events</button></Link> </Nav.Link>
                                         <Nav.Link> <Link to="/" onClick={logouthandler}><button className="navBtn">Logout</button></Link> </Nav.Link>
                                     </div>
                                 </div>

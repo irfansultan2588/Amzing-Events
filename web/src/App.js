@@ -15,6 +15,7 @@ import axios from 'axios';
 import CreateEvents from './Components/CreateEvents';
 import Home from './Components/Home';
 import Logout from './Components/Logout'
+import MyEvents from './Components/MyEvents';
 
 
 function App() {
@@ -71,9 +72,13 @@ function App() {
           {(state.isLogin === true) ?
 
             <>
-              <Route path="/" element={<Home />} />
+              <Route path="/Home" element={<Home />} />
               <Route path="/logout" element={<Logout />} />
+              <Route path="/login" element={<Home />} />
               <Route path="/CreateEvents" element={<CreateEvents />} />
+              <Route path="MyEvents" element={<MyEvents />} />
+              <Route path="/" element={<Home />} />
+
 
 
             </>

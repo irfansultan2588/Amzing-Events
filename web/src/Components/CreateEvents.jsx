@@ -4,6 +4,8 @@ import { useContext, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+
 
 
 
@@ -11,16 +13,26 @@ import axios from 'axios';
 const CreateEvents = () => {
 
     let { state, dispatch } = useContext(GlobalContext);
-    const [toggleRefresh, setToggleRefresh] = useState(true);
+    let [toggleReload, setToggleReload] = useState(false);
+    let [editEvents, setEditEvents] = useState(null);
+    let [loading, setLoading] = useState(false);
+    const [toggleRefresh, setToggleRefresh] = React.useState('sm');
+
+    const router = useLocation();
+    const event = router?.state;
+
+
 
     const formik = useFormik({
+
         initialValues: {
-            title: "",
-            select: "",
-            description: "",
-            address: "",
-            startDate: "",
-            endDate: "",
+            title: event?.event?.title ?? "",
+            select: event?.event?.select ?? "",
+            description: event?.event?.description ?? "",
+            address: event?.event?.address ?? "",
+            startDate: event?.event?.startDate ?? "",
+            endDate: event?.event?.endDate ?? "",
+            createdBy: event?.event?.createdBy ?? "",
 
         },
         validationSchema: yup.object({
@@ -33,39 +45,80 @@ const CreateEvents = () => {
 
         }),
 
+
+
+
         onSubmit: async (values, { resetForm }) => {
             console.log(values, "Values");
-            const data = new FormData();
+            if (event === null) {
+                const data = new FormData();
 
-            console.log(values, "hahah");
-            axios({
-                method: "post",
-                url: `${state.baseUrl}/event`,
-                data: {
-                    title: values["title"],
-                    select: values["select"],
-                    description: values["description"],
-                    address: values["address"],
-                    startDate: values["startDate"],
-                    endDate: values["endDate"],
-                    createdBy: state?.user?._id
-                },
 
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            })
-                .then((res) => {
-                    console.log(`upload Success` + res.data);
+                axios({
+                    method: "post",
+                    url: `${state.baseUrl}/event`,
+                    data: {
+                        title: values["title"],
+                        select: values["select"],
+                        description: values["description"],
+                        address: values["address"],
+                        startDate: values["startDate"],
+                        endDate: values["endDate"],
 
-                    setToggleRefresh(!toggleRefresh);
-                    resetForm()
+                    },
+
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
                 })
-                .catch((err) => {
-                    console.log("ERROR", err);
-                });
+                    .then((res) => {
+                        console.log(`upload Success` + res.data);
+
+                        setToggleRefresh(!toggleRefresh);
+                        resetForm()
+                    })
+                    .catch((err) => {
+                        console.log("ERROR", err);
+                    });
+
+            } else {
+                try {
+                    let updated = await
+                        axios.put(`${state.baseUrl}/event/${event?.event._id}`,
+                            {
+
+                                title: values?.title,
+                                select: values?.select,
+                                description: values?.description,
+                                address: values?.address,
+                                startDate: values?.startDate,
+                                endDate: values?.endDate,
+                            },
+                            {
+                                withCredentials: true
+                            })
+                    console.log("updated: ", updated.data);
+
+                    setToggleReload(!toggleReload);
+                    setEditEvents(null);
+                    resetForm()
+
+
+                } catch (e) {
+                    console.log("Error in api call: ", e);
+                    setLoading(false)
+                    setToggleRefresh(!toggleRefresh);
+                }
+
+            }
 
         },
+
+
     });
+
+
+
+
 
     return (
         <>
@@ -195,8 +248,12 @@ const CreateEvents = () => {
                         <div className="errorMessage">{formik.errors.endDate}</div>
                     ) : null}
 
-                    <div className='btn_container'>  <button className="addEvent_btn" type="submit">Create Events</button></div>
+
+
+
+                    <div className='btn_container'>  <button className="addEvent_btn" type="submit">  {(event === null) ? "Create Events" : "Update"}</button></div>
                 </form>
+
             </div >
 
 

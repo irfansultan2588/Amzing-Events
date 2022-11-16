@@ -1,115 +1,135 @@
-import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
-import { GlobalContext } from '../Context';
+import React, { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../Context";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
+
+const category = [
+
+    'All',
+    'Music',
+    'Visual Arts',
+    'Performing Arts',
+    'Film',
+    'Lectures & Books',
+    'Fashion',
+    'Nightlife']
 
 const Home = () => {
 
-
-
     let { state, dispatch } = useContext(GlobalContext);
     let [events, setEvents] = useState([]);
-    // let [editProduct, setEditProduct] = useState(null);
-    let [loading, setLoading] = useState(false);
     let [toggleReload, setToggleReload] = useState(false);
+    let [loading, setLoading] = useState(false);
+    const [values, setvalue] = useState(category[0]);
+    const tolowerCase = values.toLowerCase();
 
 
-    const [open, setOpen] = React.useState(false);
-    const [fullWidth, setFullWidth] = React.useState(true);
-    const [maxWidth, setMaxWidth] = React.useState('sm');
+
 
     useEffect(() => {
-
         const getAllEvents = async () => {
             try {
                 let response = await axios({
                     url: `${state.baseUrl}/events`,
                     method: "get",
-                    withCredentials: true
-                })
+                    withCredentials: true,
+                });
                 if (response.status === 200) {
                     console.log("response: ", response.data.data);
 
-                    setEvents(response?.data?.data?.reverse());
-
+                    setEvents(response.data.data.reverse());
                 } else {
-                    console.log("error in api call")
+                    console.log("error in api call");
                 }
             } catch (e) {
-                console.log("Error in api call: ", e.message);
+                console.log("Error in api call: ", e);
             }
-        }
+        };
         getAllEvents();
-
     }, [toggleReload]);
 
+
+
+
+
+
+
     return (
-        <div>
+
+        <div className="eventMain">
+            {/* ///////////////////// */}
+            <div className="main">
+
+                <select
+                    name="select1"
+                    id="select1"
+                    value={values}
+                    onChange={(e) => setvalue(e.target.value)}
+                >
+                    <option value={"All"} >All</option>
+                    <option value={"Music"} >Music</option>
+                    <option value={"Visual Arts"}>Visual Arts</option>
+                    <option value={"Performing Arts"}>Performing Arts</option>
+                    <option value={"Film"}>Film</option>
+                    <option value={"Lectures & Books"}>Lectures & Books</option>
+                    <option value={"Fashion"}>Fashion</option>
+                    <option value={"Nightlife"}>Nightlife</option>
+                </select>
 
 
-            <h1 className='productHeading'>Events Page</h1>
-            {/* <div className='card_container'>
-                {products?.map(eachProduct => (
-                    <div className='card-produdct23' key={eachProduct?._id}>
+            </div>
+            {
+                events.filter((items) => (values === items.select || values === "All")).map((item) => {
 
-                        <div className='card_child-main' >
-                            <div className='card_child'>
-                                <h5 className='cardDiv'>{eachProduct?.title}</h5>
+                    console.log(item, "item");
+                    return <div className="eventsMainDiv">
+                        <div className="titalMainDiv">
+                            <div className="titleDiv" > <h1 className="titles"><i>{item.title}</i></h1></div>
+                            <div className="titleDiv"><h4 className="select">{item.select}</h4></div>
+                        </div>
+                        <div className="titleDiv"><h3>Description: </h3><p className="dec">{item.description}</p></div>
+                        <div className="addDiv"><h3>Address: </h3><p className="add">{item.address}</p></div>
+                        <div className="dateMain">
+                            <div className="dateDiv"><h3>StartDate</h3><h4>{item.startDate}</h4></div>
+                            <div className="endDiv"><h3>EndDate</h3><h4>{item.endDate}</h4></div>
+                        </div>
+
+                        {(item.createdBy === state.user?._id) ? <>
+                            <div className="btnDiv">
+                                <button className='EventDelete' onClick={async () => {
+                                    try {
+
+                                        setLoading(true)
+
+                                        let deleted = await
+                                            axios.delete(`${state.baseUrl}/event/${item?._id}`,
+                                                {
+                                                    withCredentials: true
+                                                })
+                                        console.log("deleted: ", deleted.data);
+                                        setLoading(false)
+
+                                        setToggleReload(!toggleReload);
+
+                                    } catch (e) {
+                                        console.log("Error in api call: ", e);
+                                        setLoading(false)
+                                    }
+
+                                }}>Delete Event</button>
+
+                                <Link to="/CreateEvents" state={{ event: item }}>
+                                    <button className='EventEdit' onClick={() => {
+                                    }
+                                    }>Edit Event</button>
+                                </Link>
                             </div>
-                            <div className='card_child'>
-                                <h5 className='price'>Rs.{eachProduct?.price}</h5>
-                            </div>
-                        </div>
-                        <div className='card_child'>
-                            <h4 className='condition'>{eachProduct?.condition}</h4>
-                        </div>
-                        <div className='card_child'>
-                            <p className='description'>{eachProduct?.description}</p>
-                        </div>
-
-                        <div className="btnDiv">
-                            <button className='productDelete' onClick={async () => {
-                                try {
-
-                                    setLoading(true)
-
-                                    let deleted = await
-                                        axios.delete(`${state.baseUrl}/product/${eachProduct?._id}`,
-                                            {
-                                                withCredentials: true
-                                            })
-                                    console.log("deleted: ", deleted.data);
-                                    setLoading(false)
-
-                                    setToggleReload(!toggleReload);
-
-                                } catch (e) {
-                                    console.log("Error in api call: ", e);
-                                    setLoading(false)
-                                }
-
-                            }}>Delete product</button>
-
-                            <button className='productEdit' onClick={() => {
-                                setEditProduct({
-                                    _id: eachProduct._id,
-                                    productPicture: eachProduct?.productPicture,
-                                    title: eachProduct?.title,
-                                    price: eachProduct?.price,
-                                    condition: eachProduct?.condition,
-                                    description: eachProduct?.description,
-                                })
-                                setOpen(true)
-                            }
-                            }>Edit Product</button>
-                        </div>
-
+                        </> : <></>}
                     </div>
-                ))}
-            </div> */}
-
-
-        </div>
+                })
+            }
+        </div >
     )
 }
 

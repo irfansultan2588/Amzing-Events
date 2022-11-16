@@ -42,7 +42,7 @@ const eventSchema = new mongoose.Schema({
     select: { type: String, required: true },
     description: { type: String, required: true },
     address: { type: String, required: true },
-    createdBy: { type: String, required: true },
+    createdBy: { type: String },
     startDate: { type: String, default: Date.now },
     endDate: { type: String, default: Date.now },
 
@@ -316,26 +316,79 @@ app.get("/events", async (req, res) => {
         });
     }
 })
+///////////////get single event//////////////
+app.get("/event/:id", async (req, res) => {
+    try {
+        const event = await eventModel.find({ createdBy: req.params.id }).exec();
+        console.log("🚀 ~ event", event)
 
 
+        res.send({
+            message: "event",
+            data: event
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: "faild to get event"
+        });
+    }
+})
 
-// app.get("/event/:id", async (req, res) => {
+////////////////delete//////////////////
 
-//     try {
-//         const event = await eventModel.findOne({ _id: req.params.id }).exec();
-//         console.log("event: ", event);
+app.delete("/event/:id", async (req, res) => {
+    console.log("event delete: ", req.body);
 
-//         res.send({
-//             message: "event",
-//             data: event
-//         });
-//     } catch (error) {
-//         res.status(500).send({
-//             message: "faild to get event"
-//         });
-//     }
-// })
+    try {
+        const deleted = await eventModel.deleteOne({ _id: req.params.id });
+        console.log("event deleted: ", deleted);
 
+        res.send({
+            message: "event deleted",
+            data: deleted
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: "faild to delete event"
+        });
+    }
+})
+
+////////////////UPDATE//////////////////
+app.put("/event/:id", async (req, res) => {
+    const update = {}
+    if (req.body.title) update.title = req.body.title
+    if (req.body.select) update.select = req.body.select
+    if (req.body.description) update.description = req.body.description
+    if (req.body.address) update.address = req.body.address
+    if (req.body.startDate) update.startDate = req.body.startDate
+    if (req.body.endDate) update.endDate = req.body.endDate
+
+    try {
+        const updated = await eventModel.findOneAndUpdate({ _id: req.params.id }, update, { new: true }
+        ).exec();
+
+        res.send({
+            message: "event updated successfuly",
+            events: updated
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: "faild to upadate event"
+        });
+    }
+})
+
+app.get("/profile", async (req, res) => {
+
+    try {
+        let user = await userModel.findOne({ _id: req.body.token._id }).exec();
+        res.send(user);
+
+    } catch (error) {
+        res.status(500).send({ message: "error getting users" });
+    }
+})
 
 app.use(function (req, res, next) {
     console.log("req.cookies: ", req.cookies);
@@ -366,24 +419,18 @@ app.use(function (req, res, next) {
     });
 }),
 
-    app.get("/profile", async (req, res) => {
 
-        try {
-            let user = await userModel.findOne({ _id: req.body.token._id }).exec();
-            res.send(user);
 
-        } catch (error) {
-            res.status(500).send({ message: "error getting users" });
-        }
-    })
 
-app.post("/logout", (req, res) => {
-    res.cookie('Token', '', {
-        maxAge: 0,
-        httpOnly: true
+
+
+    app.post("/logout", (req, res) => {
+        res.cookie('Token', '', {
+            maxAge: 0,
+            httpOnly: true
+        });
+        res.send({ message: "Logout successful", });
     });
-    res.send({ message: "Logout successful", });
-});
 
 
 

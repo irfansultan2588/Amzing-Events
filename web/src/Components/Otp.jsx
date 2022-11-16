@@ -36,10 +36,21 @@ const Otp = () => {
     return (
         <div className='main-otp'>
             <div className='main-otp2'>
-                <OTPInput value={OTP} onChange={setOTP} autoFocus OTPLength={4} otpType="string" disabled={false} secure />
+                <div className='otp3'>
+                    <div>
+                        <h3>Enter Your Code</h3>
+                    </div>
 
 
-                <button onClick={codesender}> Send code</button>
+                    <div className='otp-inp'>
+                        <OTPInput value={OTP} onChange={setOTP} autoFocus OTPLength={4} otpType="string" disabled={false} secure />
+                    </div>
+
+
+                    <div className='otp-btn'>
+                        <button className='send_btn' onClick={codesender}> Send Code</button>
+                    </div>
+                </div>
 
                 {/* <ResendOTP onResendClick={() => console.log("Resend clicked")} /> */}
 

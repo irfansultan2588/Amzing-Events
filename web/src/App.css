@@ -13,19 +13,10 @@ body {
 
 }
 
-
-.navBtn {
-    padding: 5px 20px 10px 20px;
-    border-radius: 28px;
-}
-
-.navBtn:hover {
-    color: #fff;
-}
-
 .nav-2 {
     background-color: #002847 !important;
     color: #fff;
+    box-shadow: lightgray 0px 3px 8px !important;
 }
 
 .navBtn {
@@ -39,21 +30,13 @@ body {
 .haeding-nav {
     color: #fff;
     padding-top: 15px;
+    min-width: 300px;
 }
 
 .btn-container {
-    width: 100vw;
+    width: 96vw;
     display: flex;
     justify-content: space-between;
-    overflow: hidden;
-
-}
-
-.child {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-
 }
 
 .child2 {
@@ -63,7 +46,7 @@ body {
 }
 
 .btn-container-out {
-    width: 100vw;
+    width: 98vw;
     display: flex;
     justify-content: space-between;
     overflow: hidden;
@@ -84,14 +67,53 @@ body {
     text-decoration: none !important;
 }
 
+.main-otp {
+    width: 100vw;
+    height: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #002847;
+    color: #fff;
+
+
+}
+
 .main-otp2 {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
+    box-shadow: lightgray 0px 1px 2px 0px, lightgray 0px 2px 6px 2px;
+}
+
+.send_btn {
+    padding: 5px 20px 5px 20px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.otp-inp {
+    margin-top: 20px;
+}
+
+.otp3 {
+    padding: 10px;
+}
+
+.otp-btn {
+    text-align: center;
+    padding-top: 20px;
 }
 
 .css-1999axt-MuiAvatar-root {
     background-color: #002847 !important;
+}
+
+.form-control {
+    width: 40% !important;
+    border-radius: 20px !important;
 }
 
 /* /////////////////// create events////////////////// */
@@ -101,7 +123,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 65vh;
+    height: 80vh;
 }
 
 .eventsForm {
@@ -169,6 +191,15 @@ body {
     background-color: #f7f7f7;
 }
 
+.navBtn23 {
+    min-width: 80px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-weight: 500;
+    margin-top: 3px;
+}
+
 .headingg {
     font-style: italic;
     font-weight: 700;
@@ -186,4 +217,129 @@ body {
     font-style: italic;
     margin-top: 2rem;
     letter-spacing: 3px;
+}
+
+
+/* ///////events////// */
+
+.eventMain {
+    padding: 20px;
+    background-color: #002847;
+    color: #fff;
+}
+
+.eventsMainDiv {
+    box-shadow: lightgray 0px 6px 24px 0px, lightgray 0px 0px 0px 1px;
+    border-radius: 6px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 20px;
+}
+
+.titleDiv {
+    display: flex;
+    padding: 6px;
+    flex-direction: column;
+
+}
+
+.dec {
+    padding: 2px;
+    width: 80%;
+}
+
+.titalMainDiv {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px;
+}
+
+.titles {
+    letter-spacing: 3px;
+
+}
+
+.select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: lightgray;
+    color: black;
+    font-weight: 400;
+
+}
+
+.addDiv {
+    display: flex;
+    padding: 6px;
+    align-items: center;
+}
+
+.add {
+    padding: 6px;
+    width: 80%;
+    margin-top: 10px;
+}
+
+.dateMain {
+    display: flex;
+    padding: 6px;
+    justify-content: space-between;
+}
+
+.dateDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+.endDiv {
+    width: 80%;
+}
+
+
+.navbar-toggler:hover {
+    color: #f7f7f7;
+    background-color: #f7f7f7;
+
+}
+
+.main {
+    text-align: center;
+}
+
+#select1 {
+    border-bottom: 1px solid lightgray;
+    border-radius: 8px;
+    background-color: #002847;
+    color: #fff;
+}
+
+.EventDelete {
+    padding: 5px 20px 5px 20px;
+    border: 1px solid lightgray;
+    background-color: #002847;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.EventEdit {
+    padding: 5px 20px 5px 20px;
+    border: 1px solid lightgray;
+    background-color: #002847;
+    color: #fff;
+    border-radius: 8px;
+    margin-left: 10px;
+}
+
+.EventDelete:hover {
+    background-color: #fff;
+    color: #002847;
+    cursor: pointer;
+}
+
+.EventEdit:hover {
+    background-color: #fff;
+    color: #002847;
+    cursor: pointer;
 }
