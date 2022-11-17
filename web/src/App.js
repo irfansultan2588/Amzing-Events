@@ -33,7 +33,12 @@ function App() {
         let response = await axios({
           url: `${state.baseUrl}/profile`,
           method: "get",
-          withCredentials: true
+          withCredentials: true,
+          // headers: {
+          //   'Access-Control-Allow-Origin': '*',
+          //   "Content-Type": "application/json",
+
+          // }
         })
         if (response.status === 200) {
           console.log("response: ", response.data);
@@ -72,12 +77,12 @@ function App() {
           {(state.isLogin === true) ?
 
             <>
-              <Route path="/Home" element={<Home />} />
-              <Route path="/logout" element={<Logout />} />
-              <Route path="/login" element={<Home />} />
               <Route path="/CreateEvents" element={<CreateEvents />} />
+              <Route path="/logout" element={<SignUp />} />
+              <Route path="/Home" element={<Home />} />
               <Route path="MyEvents" element={<MyEvents />} />
               <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Home />} />
 
 
 
@@ -91,8 +96,8 @@ function App() {
             <>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
-              <Route path="/" element={<Home />} />
               <Route path="/Otp" element={<Otp />} />
+              <Route path="/" element={<Home />} />
 
             </>
             :

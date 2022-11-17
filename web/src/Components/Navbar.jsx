@@ -17,10 +17,10 @@ import Navbar from 'react-bootstrap/Navbar';
 const NavbarComponent = () => {
 
     let { state, dispatch } = useContext(GlobalContext);
-    let [toggleReload, setToggleReload] = useState(false);
+    // let [toggleReload, setToggleReload] = useState(false);
 
 
-    console.log(state);
+
 
     const logouthandler = async () => {
 
@@ -28,7 +28,9 @@ const NavbarComponent = () => {
             let response = await axios.post(`${state.baseUrl}/logout`, {},
 
                 {
-                    withCredentials: true
+                    withCredentials: true,
+
+
                 })
             console.log("response", response.data);
 
@@ -46,9 +48,9 @@ const NavbarComponent = () => {
 
     }));
 
-    const createEvent = () => {
-        setToggleReload(!toggleReload);
-    }
+    // const createEvent = () => {
+    //     setToggleReload(!toggleReload);
+    // }
 
     return <>
 
@@ -74,7 +76,7 @@ const NavbarComponent = () => {
 
                                     <div className="child2">
                                         <Nav.Link> <Link to="/Home"> <button className="navBtn"> Home</button></Link> </Nav.Link>
-                                        <Nav.Link> <Link to="/CreateEvents"> <button className="navBtn" onClick={createEvent}>CreateEvents</button></Link> </Nav.Link>
+                                        <Nav.Link> <Link to="/CreateEvents"> <button className="navBtn">CreateEvents</button></Link> </Nav.Link>
                                         <Nav.Link> <Link to="/MyEvents"> <button className="navBtn23">My Events</button></Link> </Nav.Link>
                                         <Nav.Link> <Link to="/" onClick={logouthandler}><button className="navBtn">Logout</button></Link> </Nav.Link>
                                     </div>
@@ -93,15 +95,11 @@ const NavbarComponent = () => {
                                         <h3 className="haeding-nav">Amazing Events</h3>
                                     </div>
                                     <div className="child3">
-                                        <Nav.Link> <Link to="/home"> <button className="navBtn"> Home</button></Link> </Nav.Link>
+                                        <Nav.Link> <Link to="/"> <button className="navBtn"> Home</button></Link> </Nav.Link>
                                         <Nav.Link> <Link to="/login"> <button className="navBtn"> Login</button></Link> </Nav.Link>
                                         <Nav.Link>  <Link to="/signup"><button className="navBtn">Signup</button></Link> </Nav.Link>
                                     </div>
                                 </div>
-
-
-
-
 
                             </>
                             :

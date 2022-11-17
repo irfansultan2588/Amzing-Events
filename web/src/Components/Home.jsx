@@ -33,7 +33,11 @@ const Home = () => {
                 let response = await axios({
                     url: `${state.baseUrl}/events`,
                     method: "get",
-                    withCredentials: true,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        "Content-Type": "application/json",
+                    }
+
                 });
                 if (response.status === 200) {
                     console.log("response: ", response.data.data);
@@ -105,7 +109,7 @@ const Home = () => {
                                         let deleted = await
                                             axios.delete(`${state.baseUrl}/event/${item?._id}`,
                                                 {
-                                                    withCredentials: true
+
                                                 })
                                         console.log("deleted: ", deleted.data);
                                         setLoading(false)

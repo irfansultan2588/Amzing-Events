@@ -68,7 +68,6 @@ const CreateEvents = () => {
                     },
 
                     headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
                 })
                     .then((res) => {
                         console.log(`upload Success` + res.data);
@@ -93,9 +92,7 @@ const CreateEvents = () => {
                                 startDate: values?.startDate,
                                 endDate: values?.endDate,
                             },
-                            {
-                                withCredentials: true
-                            })
+                        )
                     console.log("updated: ", updated.data);
 
                     setToggleReload(!toggleReload);

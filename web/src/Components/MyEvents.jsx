@@ -23,7 +23,6 @@ const MyEvents = () => {
                 let response = await axios({
                     url: `${state.baseUrl}/event/${state.user?._id}`,
                     method: "get",
-                    withCredentials: true,
                 });
                 if (response.status === 200) {
                     console.log("response: ", response.data.data);

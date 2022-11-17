@@ -17,6 +17,7 @@ app.use(cookieParser());
 
 app.use(cors({
     origin: ['http://localhost:3000', ' https://amizing-events.netlify.app', '*'],
+    withCredentials: true,
 }));
 
 
@@ -81,10 +82,10 @@ app.post("/signup", async (req, res) => {
 
     userModel.findOne({ email: body.email }, (err, user) => {
         if (!err) {
-            console.log("user: ", user);
+
 
             if (user) { // user already exist
-                console.log("user already exist: ", user);
+
                 res.status(400).send({ message: "user already exist, please try a different email" });
                 return;
 
@@ -119,7 +120,7 @@ app.post("/signup", async (req, res) => {
                             console.log(error);
                         } else {
 
-                            console.log('Email sent: ' + info.response);
+
 
 
                             userModel.create({
@@ -131,7 +132,6 @@ app.post("/signup", async (req, res) => {
                                 otp,
 
                             }).then(resss => {
-                                console.log(resss, "res");
                                 res.status(201).send({ message: "user is created" })
                             }).catch(err => {
                                 console.log(err, "err");
@@ -174,7 +174,7 @@ app.post("/login", (req, res) => {
         "email firstName lastName password verify",
         (err, user) => {
             if (!err) {
-                console.log("user: ", user);
+
 
                 if (user) { // user found
 
@@ -188,7 +188,7 @@ app.post("/login", (req, res) => {
                                 exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
                             }, SECRET);
 
-                            console.log("token:", token);
+                            console.log("Token:", token);
 
                             res.cookie('Token', token, {
                                 maxAge: 86_400_000,
@@ -265,7 +265,7 @@ app.get("/events", async (req, res) => {
 
     try {
         const events = await eventModel.find({}).exec();
-        console.log("all events: ", events);
+
 
         res.send({
             message: "all events",
@@ -277,81 +277,6 @@ app.get("/events", async (req, res) => {
         });
     }
 })
-
-
-app.use(function (req, res, next) {
-    console.log("req.cookies: ", req.cookies);
-
-    if (!req.cookies.Token) {
-        res.status(401).send({
-            message: "include http-only credentials with every request"
-        })
-        return;
-    }
-    jwt.verify(req.cookies.Token, SECRET, function (err, decodedData) {
-        if (!err) {
-
-            console.log("decodedData: ", decodedData);
-
-            const nowDate = new Date().getTime() / 1000;
-
-            if (decodedData.exp < nowDate) {
-                res.status(401).send("token expired")
-            } else {
-                console.log("token approved");
-                req.body.token = decodedData
-                next();
-            }
-        } else {
-            res.status(401).send("invalid token")
-        }
-    });
-}),
-
-
-
-
-
-
-
-    app.post("/event", async (req, res) => {
-
-        console.log(req.body, "req.body");
-
-
-        try {
-
-            const response = await eventModel.create({
-                title: req.body.title,
-                select: req.body.select,
-                description: req.body.description,
-                address: req.body.address,
-                createdBy: req.body.createdBy,
-                startDate: req.body.startDate,
-                endDate: req.body.endDate,
-
-            })
-            console.error(response, "response")
-
-            await response.save()
-            try {
-                res.send({
-                    message: "event added",
-                    data: "event created successfully"
-                });
-            } catch (err) {
-                console.error(err)
-            }
-
-        } catch (error) {
-            console.log('error', error)
-            res.status(500).send({
-                message: "faild to added event"
-            });
-        }
-
-    })
-
 
 ///////////////get single event//////////////
 app.get("/event/:id", async (req, res) => {
@@ -370,6 +295,48 @@ app.get("/event/:id", async (req, res) => {
         });
     }
 })
+
+
+app.post("/event", async (req, res) => {
+
+
+
+
+    try {
+
+        const response = await eventModel.create({
+            title: req.body.title,
+            select: req.body.select,
+            description: req.body.description,
+            address: req.body.address,
+            createdBy: req.body.createdBy,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+
+        })
+        console.error(response, "response")
+
+        await response.save()
+        try {
+            res.send({
+                message: "event added",
+                data: "event created successfully"
+            });
+        } catch (err) {
+            console.error(err)
+        }
+
+    } catch (error) {
+        console.log('error', error)
+        res.status(500).send({
+            message: "faild to added event"
+        });
+    }
+
+})
+
+
+
 
 ////////////////delete//////////////////
 
@@ -416,20 +383,56 @@ app.put("/event/:id", async (req, res) => {
     }
 })
 
-app.get("/profile", async (req, res) => {
 
-    try {
-        let user = await userModel.findOne({ _id: req.body.token._id }).exec();
-        res.send(user);
 
-    } catch (error) {
-        res.status(500).send({ message: "error getting users" });
+
+
+
+
+
+
+
+app.use(function (req, res, next) {
+    console.log("req.cookies: ", req.cookies);
+
+    if (!req.cookies.Token) {
+        res.status(401).send({
+            message: "include http-only credentials with every request"
+        })
+        return;
     }
-})
+    jwt.verify(req.cookies.Token, SECRET, function (err, decodedData) {
+        if (!err) {
+
+            console.log("decodedData: ", decodedData);
+
+            const nowDate = new Date().getTime() / 1000;
+
+            if (decodedData.exp < nowDate) {
+                res.status(401).send("token expired")
+            } else {
+                console.log("token approved");
+                req.body.token = decodedData
+                next();
+            }
+        } else {
+            res.status(401).send("invalid token")
+        }
+    });
+}),
 
 
+    app.get("/profile", async (req, res) => {
 
 
+        try {
+            let user = await userModel.findOne({ _id: req.body.token_id }).exec();
+            res.send(user);
+
+        } catch (error) {
+            res.status(500).send({ message: "error getting users" });
+        }
+    })
 app.post("/logout", (req, res) => {
     res.cookie('Token', '', {
         maxAge: 0,
@@ -439,14 +442,9 @@ app.post("/logout", (req, res) => {
 });
 
 
-
-
-
-
 app.use((req, res) => {
     res.status(404).send('404 not found')
 })
-
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
